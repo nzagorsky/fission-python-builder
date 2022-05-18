@@ -24,9 +24,11 @@ jobs:
       - name: Build image
         env:
           IMG: ${{ github.repository_owner }}/${{ env.DOCKERHUB_REPO_NAME }}:${{ env.RELEASE_VERSION }}
-        run: docker build -t ${{ env.IMG }}  .
+          LATEST_IMG: ${{ github.repository_owner }}/${{ env.DOCKERHUB_REPO_NAME }}:latest
+        run: docker build -t ${{ env.IMG }} -t {{ env.LATEST_IMG }} .
 
       - name: Push image to the Dockerhub
         env:
           IMG: ${{ github.repository_owner }}/${{ env.DOCKERHUB_REPO_NAME }}:${{ env.RELEASE_VERSION }}
-        run: docker push ${{ env.IMG }}
+          LATEST_IMG: ${{ github.repository_owner }}/${{ env.DOCKERHUB_REPO_NAME }}:latest
+        run: docker push ${{ env.IMG }} && docker push ${{ env.LATEST_IMG }}
