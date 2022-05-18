@@ -1,0 +1,32 @@
+name: release
+on:
+  push:
+    branches:
+      - "master"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: release
+    env:
+      RELEASE_VERSION: 1
+      DOCKERHUB_REPO_NAME: python-builder
+
+    steps:
+      - name: Login to Dockerhub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build image
+        env:
+          IMG: ${{ github.repository_owner }}/${{ DOCKERHUB_REPO_NAME }}:${{ env.RELEASE_VERSION }}
+        run: docker build -t ${{ env.IMG }}  .
+
+      - name: Push image to the Dockerhub
+        env:
+          IMG: ${{ github.repository_owner }}/${{ DOCKERHUB_REPO_NAME }}:${{ env.RELEASE_VERSION }}
+        run: docker push ${{ env.IMG }}
