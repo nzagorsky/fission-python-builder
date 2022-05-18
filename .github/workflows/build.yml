@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     name: release
     env:
-      RELEASE_VERSION: 2
+      RELEASE_VERSION: 3
       DOCKERHUB_REPO_NAME: python-builder
 
     steps:
